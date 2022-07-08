@@ -4,9 +4,13 @@ udapeople-prod.ctaopru9ex2f.us-east-1.rds.amazonaws.com
 ami-052efd3df9dad4825
 udapeople
 
+URL01:
 GitHub repo: https://github.com/AJAntwi/cdond-c3-project3-aa
 
-curl https://kvdb.io/Fd55uogXyxYdnXJvnyN8Xo
+URL02:
+http://udapeople-aj33-ba53f12.s3-website-us-east-1.amazonaws.com
+
+
 
 curl https://kvdb.io/RSyx7QjTE3q21Bx3BJkVcC
 default_ttl=2592000
