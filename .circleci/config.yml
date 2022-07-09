@@ -193,7 +193,7 @@ jobs:
           name: Install dependencies
           command: | 
             apk add --update  ansible
-            pip install aws-cli
+            pip install awscli
       - run:
           name: Configure servers
           command: |
@@ -276,8 +276,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible
-            pip install aws-cli
-            apk add --update --no-cache tar gzip nodejs npm curl
+            apk add --update --no-cache tar gzip nodejs npm aws-cli curl
       - run:
           name: Deploy backend
           command: |
@@ -305,8 +304,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible
-            pip install awscli
-            apk add --update --no-cache tar gzip nodejs npm curl          
+            apk add --update --no-cache tar gzip nodejs npm aws-cli curl          
       - run:
           name: Backend smoke test.
           command: |
