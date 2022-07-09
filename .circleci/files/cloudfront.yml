@@ -6,9 +6,7 @@ Parameters:
     Description: Unique identifier.
     Type: String
 
-
-Resources:
-  
+Resources:  
   CloudFrontOriginAccessIdentity:
     Type: "AWS::CloudFront::CloudFrontOriginAccessIdentity"
     Properties:
@@ -20,7 +18,7 @@ Resources:
     Properties:
       DistributionConfig:
         Origins:
-          - DomainName: !Sub "udapeople-k1aehenb-${WorkflowID}.s3.amazonaws.com"
+          - DomainName: !Sub "udapeople-${k1aehenb}.s3.amazonaws.com"
             Id: webpage
             S3OriginConfig:
               OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
