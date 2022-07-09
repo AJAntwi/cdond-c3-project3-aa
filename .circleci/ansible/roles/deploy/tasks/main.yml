@@ -1,29 +1,29 @@
 ---
 - name: "update apt packages."
-  become: yes
+  become: true
   apt:
     update_cache: yes
 
 - name: "upgrade packages"
-  become: yes
+  become: true
   apt:
     upgrade: yes
 
 
 - name: remove dependencies that are no longer required
-  become: yes
+  become: true
   apt:
     autoremove: yes
 
 - name: "install dependencies."
-  become: yes
+  become: true
   apt:
     name: ["nodejs", "npm"]
     state: latest
     update_cache: yes
 
 - name: "install pm2"
-  become: yes
+  become: true
   npm:
     name: pm2
     global: yes
@@ -31,13 +31,13 @@
     state: present
 
 - name: Extract files 
-  become: yes
+  become: true
   unarchive:
     src: files/artifact.tar.gz
     dest: .
 
 - name: Executing node
-  become: yes
+  become: true
   shell: |
     pm2 stop all
     pm2 start npm -- start
