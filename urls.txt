@@ -7,7 +7,5 @@ URL01:
 GitHub repo: https://github.com/AJAntwi/cdond-c3-project3-aa
 
 URL02:
-http://udapeople-aj33-ba53f12.s3-website-us-east-1.amazonaws.com
-
-http://udapeople-aj33-b6958f4.s3-website-us-east-1.amazonaws.com
+http://udapeople-2760bb9.s3-website-us-east-1.amazonaws.com
 
