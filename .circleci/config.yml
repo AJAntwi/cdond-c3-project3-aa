@@ -328,18 +328,14 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible
-            apk add --update --no-cache tar gzip nodejs npm aws-cli curl
-      - run:
-          name: Get backend url
-          command: |
-            export BACKEND_IP=$(aws ec2 describe-instances \
-              --filter "Name=instance-state-name,Values=running" \
-              --query "Reservations[*].Instances[*].[PublicIpAddress]" \
-              --output text)            
-            echo $BACKEND_IP          
       - run:
           name: Backend smoke test.
           command: |
+            export BACKEND_IP=$(aws ec2 describe-instances \
+              --query "Reservations[*].Instances[*].PublicIpAddress" \
+              --filters "Name=tag:project,Values=udapeople" \
+              --output text)            
+            echo $BACKEND_IP
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
