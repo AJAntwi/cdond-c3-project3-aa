@@ -1,6 +1,26 @@
 version: 2.1
 
 commands:
+  install_awscli:
+    description: Install AWS CLI v2
+    steps:
+      - run:
+          name: Install AWS CLI v2
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+
+  install_ansible:
+    description: Install Ansible
+    steps:
+      - run:
+          name: Install Ansible
+          command: |
+            sudo apt update
+            sudo apt install -y python3 python3-pip
+            python3 -m pip install --user ansible
+
   revert_migrations:
     description: Revert the last migration
     parameters:
@@ -388,13 +408,13 @@ jobs:
               --stack-status-filter CREATE_COMPLETE --no-paginate --output text)
             echo OldWorkflowID: "${OldWorkflowID}"
             echo Stack names: "${STACKS[@]}"
-            export OldWorkflowID="$WorkFlowID"
+            export OldWorkflowID="$WorkflowID"
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}"  ]]
             then
               echo "$OldWorkflowID" is not the same as "$WorkflowID" deleting Old Stack
-              aws s3 rm "s3://udapeople-$OldWorkFlowID" --recursive
-              aws cloudformation delete-stack --stack-name "udapeople-backend-$OldWorkFlowID"
-              aws cloudformation delete-stack --stack-name "udapeople-frontend-$OldWorkFlowID"
+              aws s3 rm "s3://udapeople-$OldWorkflowID" --recursive
+              aws cloudformation delete-stack --stack-name "udapeople-backend-$OldWorkflowID"
+              aws cloudformation delete-stack --stack-name "udapeople-frontend-$OldWorkflowID"
             else
               echo "nothing to needs to be done..."
             fi 
