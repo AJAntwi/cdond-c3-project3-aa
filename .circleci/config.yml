@@ -230,9 +230,15 @@ jobs:
       - checkout
       - restore_cache:
           keys: [backend-build]
+       - run:
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
       - run:
           name: Run migrations
           command: |
+            cd ~/project/backend
             cd backend
             npm install
             npm run migrations > migrations_dump.txt
@@ -243,7 +249,7 @@ jobs:
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then 
               echo "DB migration was successful"
-              curl https://kvdb.io/RSyx7QjTE3q21Bx3BJkVcC/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
+              curl https://kvdb.io/RSyx7QjTE3q21Bx3BJkVcC/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1' --insecure
             else
               echo "DB migration failed"
             fi
