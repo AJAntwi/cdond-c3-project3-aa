@@ -167,9 +167,6 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-          command: |
-            cat ~/project/.circleci/ansible/inventory.txt
-      - run:
           name: Install dependencies
           command: |
             apk add --update ansible tar gzip
