@@ -170,7 +170,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update  ansible
-            apk add --update --no-cache tar gzip nodejs npm aws-cli curl
+            pip install awscli
       - run:
           name: Configure server
           working_directory: ./.circleci/ansible
