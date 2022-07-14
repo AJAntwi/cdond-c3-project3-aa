@@ -1,44 +1,8 @@
 version: 2.1
 
 commands:
-  install_awscli:
-    description: Install AWS CLI v2
-    steps:
-      - run:
-          name: Install AWS CLI v2
-          command: |
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
-
-  install_ansible:
-    description: Install Ansible
-    steps:
-      - run:
-          name: Install Ansible
-          command: |
-            sudo apt update
-            sudo apt install -y python3 python3-pip
-            python3 -m pip install --user ansible
-
-  revert_migrations:
-    description: Revert the last migration
-    steps:
-      - run:
-          name: Revert migrations
-          when: on_fail
-          command: |
-            SUCCESS=$(curl --insecure https://kvdb.io/RSyx7QjTE3q21Bx3BJkVcC/migration_${CIRCLE_WORKFLOW_ID:0:7})
-            if (( $SUCCESS == 1));
-            then
-              cd ~/project/backend
-              npm install
-              npm run build
-              npm run migrations:revert
-            fi
-
   destroy-environment:
-    description: Destroys back-end and front-end cloudformation stack given a workflow ID. 
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     steps:
       - run:
           name: Destroy environments
@@ -47,8 +11,22 @@ commands:
             echo "Destroying environment: ${CIRCLE_WORKFLOW_ID:0:7} "
             aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
             aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
-            aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}    
-
+            aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
+  revert-migrations:
+    description: Revert the last migration if successfully run in the current workflow.     
+    steps:
+      - run:
+          name: Revert migrations
+          when: on_fail
+          command: |
+            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
+            SUCCESS=$(curl --insecure https://kvdb.io/RSyx7QjTE3q21Bx3BJkVcC/migration_${CIRCLE_WORKFLOW_ID:0:7})
+            if (( $SUCCESS == 1 ));
+            then
+                cd ~/project/backend
+                npm install
+                npm run migrations:revert
+            fi
 jobs:
   build-frontend:
     docker:
@@ -60,6 +38,7 @@ jobs:
       - run:
           name: Build front-end
           command: |
+            # Your code here
             cd frontend
             npm install
             npm run build
@@ -77,9 +56,10 @@ jobs:
       - run:
           name: Back-end build
           command: |
-            cd backend
-            npm install
-            npm run build
+             # Your code here
+             cd backend
+             npm install
+             npm run build
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
@@ -111,7 +91,6 @@ jobs:
             cd backend
             npm install
             npm run test
-  
   scan-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -158,7 +137,8 @@ jobs:
               --template-file .circleci/files/backend.yml \
               --tags project=udapeople \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"      
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
+            
       - run:
           name: Ensure front-end infrastructure exist
           command: |
@@ -184,7 +164,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["07:c7:b4:df:33:69:30:b2:8c:76:23:c0:3a:21:21:08"] 
+          fingerprints: ["24:00:b3:17:72:a4:a5:2b:61:15:bf:83:1c:8e:12:8a"] 
       - attach_workspace:
           at: ~/
       - run:
@@ -200,8 +180,8 @@ jobs:
           command: |
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
-      - destroy-environment
-  
+      -  destroy-environment
+
   run-migrations:
     docker:
       - image: circleci/node:13.8.0
@@ -227,10 +207,8 @@ jobs:
             then
               curl https://kvdb.io/RSyx7QjTE3q21Bx3BJkVcC/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1' --insecure
             fi
-              echo "DB migration failed"
-            fi
       - destroy-environment
-
+  
   deploy-frontend:
     docker:
       - image: python:3.7-alpine3.11
