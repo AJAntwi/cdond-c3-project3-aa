@@ -408,7 +408,7 @@ jobs:
             fi
 
 workflows:
-  default:
+  project3:
     jobs:
       - build-frontend
       - build-backend
