@@ -17,6 +17,7 @@ commands:
             aws s3 rm s3://udapeople-<<parameters.ID>> --recursive
             aws cloudformation delete-stack \
              --stack-name udapeople-frontend-<<parameters.ID>>
+  
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
@@ -300,9 +301,7 @@ jobs:
             npm i
             npm run build
             cd ..
-            # Zip the directory
             tar -C backend -czvf artifact.tar.gz .
-            # tree -afC /root/project/.circleci -I *node_modules*
             mkdir -p ~/project/.circleci/ansible/roles/deploy/files/
             mv artifact.tar.gz .circleci/ansible/roles/deploy/files/artifact.tar.gz
       - run:
