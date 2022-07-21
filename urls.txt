@@ -1,5 +1,10 @@
 URL01:
 GitHub repo: https://github.com/AJAntwi/cdond-c3-project3-aa
 
+URL02:
+http://udapeople-a2b3316.s3-website-us-east-1.amazonaws.com/#/employees
+
+URL03:
+http://d37vchddd3i890.cloudfront.net/#/employees
 
 
